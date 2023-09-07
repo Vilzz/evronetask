@@ -7,12 +7,12 @@ type ListItemPropsType = {
   onUpdate: (index: number) => void
 }
 
-const ListItem = function ({ index, item, onUpdate }: ListItemPropsType) {
+const ListItem = function ({ index, item: { value, label }, onUpdate }: ListItemPropsType) {
   const [renderCount, setRenderCount] = useState<number>(0)
 
   useEffect(() => {
     setRenderCount(renderCount + 1)
-  }, [item.value])
+  }, [value])
 
   const handleClick = () => {
     onUpdate(index)
@@ -20,8 +20,7 @@ const ListItem = function ({ index, item, onUpdate }: ListItemPropsType) {
 
   return (
     <li>
-      {item.label}: {item.value} (renders: {renderCount})
-      <button onClick={handleClick}>Update</button>
+      {label}: {value} (renders: {renderCount})<button onClick={handleClick}>Update</button>
     </li>
   )
 }
