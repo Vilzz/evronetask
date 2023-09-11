@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from 'react'
+import { memo } from 'react'
 import { ListStateType } from './List'
 
 type ListItemPropsType = {
@@ -7,22 +7,23 @@ type ListItemPropsType = {
   onUpdate: (index: number) => void
 }
 
-const ListItem = function ({ index, item: { value, label }, onUpdate }: ListItemPropsType) {
-  const [renderCount, setRenderCount] = useState<number>(0)
-
-  useEffect(() => {
-    setRenderCount(renderCount + 1)
-  }, [value])
-
+const ListItem = function ({ index, item, onUpdate }: ListItemPropsType) {
   const handleClick = () => {
     onUpdate(index)
   }
 
   return (
     <li>
-      {label}: {value} (renders: {renderCount})<button onClick={handleClick}>Update</button>
+      {item.label}: {item.value} (renders: {item.clicks})
+      <button onClick={handleClick}>Update</button>
     </li>
   )
 }
 
-export default memo(ListItem)
+const propsAreEqual = (
+  { item: prevProps }: Readonly<ListItemPropsType>,
+  { item: nextProps }: Readonly<ListItemPropsType>
+) => {
+  return prevProps === nextProps
+}
+export default memo(ListItem, propsAreEqual)
